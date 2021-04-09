@@ -31,6 +31,8 @@ from . import metrics_tracking
 from . import stateful
 from . import trial as trial_lib
 
+import time
+
 Objective = collections.namedtuple("Objective", "name direction")
 
 
@@ -65,6 +67,7 @@ class Oracle(stateful.Stateful):
         allow_new_entries=True,
         tune_new_entries=True,
         seed=None,
+        timeout=None,
     ):
         self.objective = _format_objective(objective)
         self.max_trials = max_trials
@@ -112,6 +115,9 @@ class Oracle(stateful.Stateful):
         # results.
         self.multi_worker = False
         self.should_report = True
+
+        self.timeout = timeout
+        self.time_created = time.time()
 
     def _populate_space(self, trial_id):
         """Fill the hyperparameter space with values for a trial.
@@ -165,8 +171,11 @@ class Oracle(stateful.Stateful):
             return self.ongoing_trials[tuner_id]
 
         trial_id = trial_lib.generate_trial_id()
-
-        if self.max_trials and len(self.trials) >= self.max_trials:
+        if self.timeout and time.time() > self.time_created + self.timeout:
+            print('TIMEOUT STOP ELAPSED {}'.format(time.time() - self.time_created))
+            status = trial_lib.TrialStatus.STOPPED
+            values = None
+        elif self.max_trials and len(self.trials) >= self.max_trials:
             status = trial_lib.TrialStatus.STOPPED
             values = None
         else:

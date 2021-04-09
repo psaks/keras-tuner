@@ -96,6 +96,7 @@ class HyperbandOracle(oracle_module.Oracle):
         hyperparameters=None,
         allow_new_entries=True,
         tune_new_entries=True,
+        timeout=None,
     ):
         super(HyperbandOracle, self).__init__(
             objective=objective,
@@ -103,6 +104,7 @@ class HyperbandOracle(oracle_module.Oracle):
             allow_new_entries=allow_new_entries,
             tune_new_entries=tune_new_entries,
             seed=seed,
+            timeout=timeout,
         )
         if factor < 2:
             raise ValueError("factor needs to be a int larger than 1.")

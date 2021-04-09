@@ -166,6 +166,7 @@ class BayesianOptimizationOracle(oracle_module.Oracle):
         hyperparameters=None,
         allow_new_entries=True,
         tune_new_entries=True,
+        timeout=None,
     ):
         super(BayesianOptimizationOracle, self).__init__(
             objective=objective,
@@ -174,6 +175,7 @@ class BayesianOptimizationOracle(oracle_module.Oracle):
             tune_new_entries=tune_new_entries,
             allow_new_entries=allow_new_entries,
             seed=seed,
+            timeout=timeout,
         )
         self.num_initial_points = num_initial_points
         self.alpha = alpha

@@ -57,6 +57,7 @@ class RandomSearchOracle(oracle_module.Oracle):
         hyperparameters=None,
         allow_new_entries=True,
         tune_new_entries=True,
+        timeout=None,
     ):
         super(RandomSearchOracle, self).__init__(
             objective=objective,
@@ -65,6 +66,7 @@ class RandomSearchOracle(oracle_module.Oracle):
             tune_new_entries=tune_new_entries,
             allow_new_entries=allow_new_entries,
             seed=seed,
+            timeout=timeout,
         )
 
     def _populate_space(self, _):
